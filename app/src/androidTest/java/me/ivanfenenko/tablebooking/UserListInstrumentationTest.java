@@ -13,8 +13,14 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 
 import me.ivanfenenko.tablebooking.customers.UserListActivity;
+import me.ivanfenenko.tablebooking.utils.RecyclerViewMatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -26,13 +32,17 @@ public class UserListInstrumentationTest {
 
     private MockWebServer mockWebServer = new MockWebServer();
 
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
+    }
+
     @Rule
     public ActivityTestRule<UserListActivity> activityTestRule =
             new ActivityTestRule<>(UserListActivity.class, false, true);
 
     @Before
     public void setup() throws IOException {
-        mockWebServer.start();
+        mockWebServer.start(3333);
     }
 
     @After
@@ -41,13 +51,19 @@ public class UserListInstrumentationTest {
     }
 
     @Test
-    public void show_list() throws IOException {
-        UserListActivity activity = activityTestRule.getActivity();
-
-        mockWebServer.enqueue(new MockResponse());
+    public void show_list_error() throws IOException {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(500));
 
         activityTestRule.launchActivity(new Intent());
 
-            
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withId(R.id.recyclerView))
+                .check(matches(hasDescendant(withId(R.id.error_text))));
+
     }
 }

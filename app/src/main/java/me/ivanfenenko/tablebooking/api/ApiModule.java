@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import dagger.Module;
 import dagger.Provides;
-import me.ivanfenenko.tablebooking.R;
+import me.ivanfenenko.tablebooking.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.CallAdapter;
@@ -32,7 +32,7 @@ public class ApiModule {
                                  GsonConverterFactory gsonConverterFactory,
                                  CallAdapter.Factory factory) {
         return new Retrofit.Builder()
-                .baseUrl(context.getString(R.string.root_url))
+                .baseUrl(BuildConfig.ROOT_URL)
                 .client(httpClient)
                 .addConverterFactory(gsonConverterFactory)
                 .addCallAdapterFactory(factory)
