@@ -13,7 +13,9 @@ android {
             enabled true
         }
     }
+    testBuildType 'espresso'
     buildTypes {
+        espresso.initWith(buildTypes.release)
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -27,9 +29,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     compile 'com.google.dagger:dagger:2.2'
     compile 'io.reactivex:rxjava:1.0.14'
     compile 'io.reactivex:rxandroid:1.0.1'
@@ -47,6 +46,11 @@ dependencies {
     testCompile 'org.mockito:mockito-all:1.10.19'
     androidTestCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs'
+    })
+    espressoCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
+    espressoCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
