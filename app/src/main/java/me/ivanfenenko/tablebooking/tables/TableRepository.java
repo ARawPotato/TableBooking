@@ -3,6 +3,8 @@ package me.ivanfenenko.tablebooking.tables;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import me.ivanfenenko.tablebooking.api.ApiService;
 import me.ivanfenenko.tablebooking.database.AppPreferencesManager;
 import me.ivanfenenko.tablebooking.model.Table;
@@ -13,6 +15,8 @@ import rx.Observable;
  */
 
 public class TableRepository {
+
+    @Inject TableRepository() {}
 
     public Observable<List<Table>> getTables(ApiService apiService,
                                   AppPreferencesManager preferencesManager) {
@@ -25,7 +29,7 @@ public class TableRepository {
                 .first();
     }
 
-    protected List<Table> bookingsToTable(List<Boolean> bookings) {
+    public List<Table> bookingsToTable(List<Boolean> bookings) {
         List<Table> tables = new ArrayList<>();
         for (int i = 0; i < bookings.size(); i++) {
             Boolean isAvailable = bookings.get(i);
@@ -37,7 +41,7 @@ public class TableRepository {
         return tables;
     }
 
-    protected Observable<List<Table>> getTablesFromNetwork(ApiService apiService,
+    public Observable<List<Table>> getTablesFromNetwork(ApiService apiService,
                                                         AppPreferencesManager preferencesManager) {
         return apiService
                 .getTableMap()
@@ -53,7 +57,7 @@ public class TableRepository {
                 .switchMap(preferencesManager::saveBookings);
     }
 
-    protected Observable<List<Table>> getTablesFromStorage(AppPreferencesManager preferencesManager) {
+    public Observable<List<Table>> getTablesFromStorage(AppPreferencesManager preferencesManager) {
         return preferencesManager
                 .getBookings()
                 .map(this::bookingsToTable)

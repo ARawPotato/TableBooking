@@ -18,4 +18,6 @@ public interface ApplicationComponent {
     void inject(TableBookingActivity activity);
     void inject(UserListActivity activity);
 
+    void inject(TableService service);
+
 }

@@ -14,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.ivanfenenko.tablebooking.App;
 import me.ivanfenenko.tablebooking.R;
+import me.ivanfenenko.tablebooking.TableService;
 import me.ivanfenenko.tablebooking.adapter.CustomerAdapter;
 import me.ivanfenenko.tablebooking.adapter.STATE;
 import me.ivanfenenko.tablebooking.model.Customer;
@@ -43,6 +44,9 @@ public class UserListActivity extends AppCompatActivity implements UsersView {
 
         adapter.setItemClickListener((c) -> TableBookingActivity.launchActivity(this, c));
         adapter.setonErrorClickListener((v) -> presenter.triggerLoading());
+
+        // register service
+        TableService.registerAlarm(this);
     }
 
     @Override
